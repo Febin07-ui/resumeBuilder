@@ -13,6 +13,7 @@ function App() {
 
   return (
     <>
+      <Header/>
       <Routes>
         <Route path='/' element = {<LandingPage/>} />
         <Route path='/resume' element = {<ResumeGenerator/>} />
@@ -21,6 +22,7 @@ function App() {
         <Route path='/*' element = {<Pnf/>} />
         
       </Routes>
+      <Footer/>
     </>
   )
 }
