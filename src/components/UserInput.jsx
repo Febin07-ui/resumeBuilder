@@ -7,7 +7,8 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { TextField } from '@mui/material';
-import { resume } from 'react-dom/server';
+import { IoIosRemoveCircleOutline } from "react-icons/io";
+
 const steps = ['Basic Information', 'Contact Details', 'Educational details','WorkExperience', 'Skills & Certification','Review&Submit'];
 
 function UserInput() {
@@ -32,6 +33,9 @@ function UserInput() {
     userSkills:[],
     summary:""
   })
+
+  const skillRef = React.useRef()
+
   console.log(resumeDetails)
 
   const skillSuggestionArray = ['NODE JS','MONGODB','EXPRESS JS','REACT','ANGULAR','LEADERSHIP','COMMUNICATION','COACHING','POWER BI','MS EXCEL']
@@ -79,6 +83,19 @@ function UserInput() {
   const handleReset = () => {
     setActiveStep(0);
   };
+
+  const addSkills = (skill) => {
+    if(resumeDetails.userSkills.includes(skill)){
+      alert('skill already added');
+    }else{
+      setResumeDetails({...resumeDetails,userSkills:[...resumeDetails.userSkills,skill]})
+      skillRef.current.value = ""
+    }
+  }
+  const removeSkill = (skill)=>{
+    setResumeDetails({...resumeDetails,userSkills:resumeDetails.userSkills.filter(item=>item !== skill)})
+
+  }
 
   const renderSteps = (stepCount) => {
     switch(stepCount){
@@ -133,20 +150,27 @@ function UserInput() {
             <div>
                 <h3>Skills</h3>
                 <div className='d-flex align-items-center justify-content-between p-3 w-100'>
-                  <input type="text" className='form-control' placeholder='Add Skills' />
-                  <Button variant='text'>ADD</Button>
+                  <input ref={skillRef} type="text" className='form-control' placeholder='Add Skills' />
+                  <Button onClick={()=>addSkills(skillRef.current.value)} variant='text'>ADD</Button>
                 </div>
                 <h5>Suggestions</h5>
                 <div className="d-flex flex-wrap justify-content-between my-3">
                   {
                     skillSuggestionArray.map((item,index)=>(
-                      <Button key={index} variant='outlined' className='m-2'>{item}</Button>
+                      <Button onClick={()=>addSkills(item)} key={index} variant='outlined' className='m-2'>{item}</Button>
                     ))
                   }
                 </div>
                 <h5>Added Skills</h5>
-                <div className="d-flex flex-wrap justify-content-between my-3">
-                  <Button variant="contained">Node JS<IoMdClose className='ms-2'/></Button>
+                <div className="d-flex flex-wrap justify-content-between my-3">                
+                      {
+                        resumeDetails.userSkills?.length>0?
+                        resumeDetails.userSkills?.map((skill,index)=>(
+                          <Button key={index} varient="contained" className='m-1' >{skill}<IoIosRemoveCircleOutline  onClick={()=>removeSkill(skill) }/></Button>
+                        ))
+                        :
+                        <p className='fw-bolder'>No Skill are added yest</p>
+                      }
                 </div>
 
             </div>
@@ -156,7 +180,7 @@ function UserInput() {
                 <h3>Summary</h3>
                 <div className='p-3 row'>
                 
-                  <TextField id="standard-basic-summary" varient="standard" multiline rows={6} defaultValue={'Passionate MEAN Stack Developer skilled in building dynamic web applications using MongoDB, Express.js, Angular, and Node.js. Experienced in creating responsive UIs, RESTful APIs, and managing databases to deliver efficient full-stack solutions.'} ></TextField>
+                  <TextField onChange={e=>setResumeDetails({...resumeDetails,summary:e.target.value})} id="standard-basic-summary" varient="standard" multiline rows={6} defaultValue={'Passionate MEAN Stack Developer skilled in building dynamic web applications using MongoDB, Express.js, Angular, and Node.js. Experienced in creating responsive UIs, RESTful APIs, and managing databases to deliver efficient full-stack solutions.'} ></TextField>
                 </div>
             </div>
         )
