@@ -8,36 +8,17 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { TextField } from '@mui/material';
 import { IoIosRemoveCircleOutline } from "react-icons/io";
+import { addResumeAPI } from '../services/allAPI';
+import { useNavigate } from 'react-router-dom';
+
 
 const steps = ['Basic Information', 'Contact Details', 'Educational details','WorkExperience', 'Skills & Certification','Review&Submit'];
 
-function UserInput() {
-
-  const [resumeDetails,setResumeDetails] = React.useState({
-    userName:"",
-    jobTitle:"",
-    location:"",
-    email:"",
-    mobile:"",
-    github:"",
-    linkedIn:"",
-    portfolio:"",
-    course:"",
-    college:"",
-    university:"",
-    passoutYear :"",
-    jobType:"",
-    company:"",
-    cLocation:"",
-    duration :"",
-    userSkills:[],
-    summary:""
-  })
-
-  const skillRef = React.useRef()
-
+function UserInput({resumeDetails,setResumeDetails}) {
   console.log(resumeDetails)
 
+  const skillRef = React.useRef()
+  const navigate = useNavigate()
   const skillSuggestionArray = ['NODE JS','MONGODB','EXPRESS JS','REACT','ANGULAR','LEADERSHIP','COMMUNICATION','COACHING','POWER BI','MS EXCEL']
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
@@ -187,6 +168,29 @@ function UserInput() {
     }
   }
 
+  const handleAddResume = async() => {
+    const {userName,jobTitle,location} = resumeDetails
+    if(!userName && !jobTitle && !location){
+      alert("please fill the form completly ")
+    }else{
+      //api
+      console.log("Api Call");
+      try{
+        const result = await addResumeAPI(resumeDetails)
+        console.log(result)
+        if(result.status==201){
+          alert("Resume added successfully")
+          const {id} = result.data
+          navigate(`/resume/${id}/view`)
+        }
+      }catch(error){
+        console.log(error)
+      }
+    }
+     
+    //success
+  } 
+
   return (
     <Box sx={{ width: '100%' }}>
       <Stepper activeStep={activeStep}>
@@ -247,9 +251,15 @@ function UserInput() {
                 Skip
               </Button>
             )}
-            <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-            </Button>
+
+            {
+              activeStep === steps.length - 1 ? 
+                <Button onClick={handleAddResume}>Finish</Button>
+                : 
+                <Button onClick={handleNext}>Next</Button>
+                
+            }
+            
           </Box>
         </React.Fragment>
       )}

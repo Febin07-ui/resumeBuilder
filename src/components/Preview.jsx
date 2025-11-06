@@ -1,24 +1,34 @@
 import React from 'react'
 import Divider from '@mui/material/Divider';
-function Preview() {
+import { Button } from '@mui/material';
+function Preview({resumeDetails}) {
   return (
     <div style={{margin:'90px'}} className='shadow p-5 w-100 rounded text-center'>
-      <h3>Name</h3>
-      <h4>Job Title</h4>
-      <h6><span>Location</span><span>E Mail</span><span>Mobile</span></h6>
+      <h3>{resumeDetails?.userName}</h3>
+      <h4>{resumeDetails?.jobTitle}</h4>
+      <h6><span>{resumeDetails?.location}</span>|<span>{resumeDetails?.email}</span>|<span>{resumeDetails?.mobile}</span></h6>
       <p className='my-3'>
-        <a href="" target='_blank' >GITHUB</a>|
-        <a href="" target='_blank'>LINKEDIN</a>|
-        <a href="" target='_blank'>PORTFOLIO</a>
+        <a href="" target='_blank' >{resumeDetails?.github}</a>|
+        <a href="" target='_blank'>{resumeDetails?.linkedIn}</a>|
+        <a href="" target='_blank'>{resumeDetails?.portfolio}</a>
       </p>
       <Divider sx={{fontSize:'25px'}}>  Summary</Divider>
-      <p style={{textAlign:'justify'}}>oDB, Express.js, Angular, and Node.js. Experienced in creating responsive UIs, RESTful APIs, and managing databases to deliver efficient full-stack solutions.</p>
+      <p style={{textAlign:'justify'}}>{resumeDetails?.summary}</p>
       <Divider sx={{fontSize:'25px',marginBottom:'10px'}} >Education</Divider>
-      <h5>Course Name</h5>
-      <p><span className='mx-2'>Collage</span>|<span className='mx-2'>University</span>|<span className='mx-2'>passout year</span></p>
+      <h5>{resumeDetails?.course}</h5>
+      <p><span className='mx-2'>{resumeDetails?.college}</span>|<span className='mx-2'>{resumeDetails?.university}</span>|<span className='mx-2'>{resumeDetails?.passoutYear}</span></p>
       <Divider sx={{fontSize:'25px',marginBottom:'10'}} >Proffestional Experience</Divider>
-      <h5>Job/Intenship</h5>
-      <p><span className='mx-2'>Company name</span>|<span className='mx-2'>company location</span>|<span className='mx-2'>duration</span></p>
+      <h5>{resumeDetails?.jobType}</h5>
+      <p><span className='mx-2'>{resumeDetails?.company}</span>|<span className='mx-2'>{resumeDetails?.cLocation}</span>|<span className='mx-2'>{resumeDetails?.duration}</span></p>
+      <Divider sx={{fontSize:'25px',marginBottom:'10'}} >Proffestional Experience</Divider>
+      <div className='d-flex flex-wrap justify-content-between'>
+        {
+          resumeDetails?.userSkills?.map((item,index)=>(
+            <Button key={index} varient = "contained" className="m-1">{item}</Button>
+      
+          ))
+        }
+      </div>
     </div>
   )
 }

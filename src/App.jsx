@@ -7,6 +7,7 @@ import History from './pages/History'
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 import Pnf from "./pages/Pnf"
+import ViewResume from "./pages/ViewResume"
 
 function App() {
   
@@ -19,8 +20,9 @@ function App() {
         <Route path='/resume' element = {<ResumeGenerator/>} />
         <Route path='/form' element = {<UserForm/>} />
         <Route path='/history' element = {<History/>} />
+        {/* dynamic url are prefix with column and dynamic value will be stored in variable after column  */}
+        <Route path="/resume/:id/view" element = {<ViewResume/>}/>
         <Route path='/*' element = {<Pnf/>} />
-        
       </Routes>
       <Footer/>
     </>
