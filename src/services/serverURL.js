@@ -1,3 +1,3 @@
-const serverURL = "http://localhost:3000"
+const serverURL = "https://resumebuilderserver-yvpa.onrender.com"
 
 export default serverURL;

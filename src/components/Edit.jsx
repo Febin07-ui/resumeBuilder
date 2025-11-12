@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
 import { IoIosRemoveCircleOutline } from "react-icons/io";
-
+import { updateResumeAPI } from '../services/allAPI';
 
 const style = {
   position: 'absolute',
@@ -42,7 +42,25 @@ function Edit({resumeDetails,setResumeDetails}) {
         setResumeDetails({...resumeDetails,userSkills:resumeDetails.userSkills.filter(item=>item !== skill)})
 
     }
-    
+    const handleResumeUpdate = async ()=>{
+    const {id,userName,jobTitle,location} = resumeDetails
+    if(!userName && !jobTitle && !location){
+        alert("please fill the form completely ")
+    } else {
+        console.log("Api Call");
+        try{
+        const result = await updateResumeAPI(id,resumeDetails)
+        console.log(result)
+        if(result.status==200){
+            alert("Resume updated")
+            handleClose()
+        }
+        } catch(err){
+        console.log(err);
+        }
+    }  
+    }   
+
 
 
   return (
@@ -126,12 +144,12 @@ function Edit({resumeDetails,setResumeDetails}) {
                     <h3>Summary</h3>
                     <div className='p-3 row'>
                     
-                        <TextField onChange={e=>setResumeDetails({...resumeDetails,summary:e.target.value})} id="standard-basic-summary" varient="standard" multiline rows={6} defaultValue={'Passionate MEAN Stack Developer skilled in building dynamic web applications using MongoDB, Express.js, Angular, and Node.js. Experienced in creating responsive UIs, RESTful APIs, and managing databases to deliver efficient full-stack solutions.'} ></TextField>
+                        <TextField onChange={e=>setResumeDetails({...resumeDetails,summary:e.target.value})} id="standard-basic-summary" variant="standard" multiline rows={6} defaultValue={'Passionate MEAN Stack Developer skilled in building dynamic web applications using MongoDB, Express.js, Angular, and Node.js. Experienced in creating responsive UIs, RESTful APIs, and managing databases to deliver efficient full-stack solutions.'} ></TextField>
                     </div>
                 </div>
                 {/* button for update */}
                 <div className="">
-                    <button className='btn btn-warning text-light'>Update</button>
+                    <button onClick={handleResumeUpdate} className='btn btn-warning text-light'>Update</button>
                 </div>
             </Box>
             </Box>
@@ -139,5 +157,6 @@ function Edit({resumeDetails,setResumeDetails}) {
     </div>
   )
 }
+
 
 export default Edit
